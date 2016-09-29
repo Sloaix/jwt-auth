@@ -1,0 +1,16 @@
+{
+    "name": "lsxiao/jwt-auth",
+    "description": "JSON Web Token Authentication for  Lumen",
+    "authors": [
+        {
+            "name": "lsxiao",
+            "email": "faith.epiphone@qq.com"
+        }
+    ],
+    "require": {},
+    "autoload": {
+        "psr-4": {
+            "Lsxiao\\JWT\\": "src"
+        }
+    }
+}
