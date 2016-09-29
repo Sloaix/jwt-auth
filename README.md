@@ -9,7 +9,7 @@ Lumen JSON Web Token 认证扩展包
 ## 引入jwt-auth到项目中
 
 ```bash
-composer require lsxiao/jwt-auth
+composer require "lsxiao/jwt-auth"
 ```
 
 
