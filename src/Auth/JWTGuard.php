@@ -156,6 +156,8 @@ class JWTGuard implements Guard
 
         $now = time();
 
+        $customClaims = $user->getCustomClaims();
+
         $agloId = ConfigUtil::getAlgorithmId();
         $blacklistGraceTime = ConfigUtil::getBlackListGraceTime();
         $issuer = $this->request->url();
@@ -167,6 +169,12 @@ class JWTGuard implements Guard
         $subject = $user->getIdentifier();
         $secretKey = ConfigUtil::getSecretKey();
 
+        if (isset($customClaims) && is_array($customClaims)) {
+            foreach ($customClaims as $name => $value) {
+                $builder->customClaim($name, $value);
+            }
+        }
+        
         $token = $builder->algoId($agloId)
             ->issuer($issuer)
             ->issueAt($issueAt)
