@@ -1,12 +1,11 @@
 {
     "name": "lsxiao/jwt-auth",
-    "description": "JSON Web Token Authentication for  Lumen",
+    "description": "JSON Web Token Authentication for Lumen",
     "authors": [
         {
             "name": "lsxiao",
             "email": "faith.epiphone@qq.com",
-            "homepage": "https://www.zhihu.com/people/lsxiao",
-            "role": "Developer"
+            "homepage": "https://www.zhihu.com/people/lsxiao"
         }
     ],
     "require": {
@@ -29,6 +28,5 @@
         "json web token"
     ],
     "license": "Apache-2.0",
-    "prefer-stable": true,
     "minimum-stability": "dev"
 }
