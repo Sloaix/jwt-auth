@@ -10,7 +10,7 @@ use InvalidArgumentException;
 use Lsxiao\JWT\Builder;
 use Lsxiao\JWT\Contracts\IClaimProvider;
 use Lsxiao\JWT\Exception\BaseJWTException;
-use Lsxiao\JWT\Exception\TokenNotFoundException;
+use Lsxiao\JWT\Exception\TokenNotInRequestException;
 use Lsxiao\JWT\Token;
 use Lsxiao\JWT\Util\CacheUtil;
 use Lsxiao\JWT\Util\ConfigUtil;
@@ -201,7 +201,7 @@ class JWTGuard implements Guard
     /**
      * 从请求解析返回Token
      * @return Token
-     * @throws TokenNotFoundException
+     * @throws TokenNotInRequestException
      */
     private function parseToken()
     {
@@ -213,7 +213,7 @@ class JWTGuard implements Guard
         }
 
         if (!isset($token)) {
-            throw new TokenNotFoundException("not found token param from the request");
+            throw new TokenNotInRequestException("not found token param from the request");
         }
 
         $token = Parser::parseToken($token);
@@ -223,7 +223,6 @@ class JWTGuard implements Guard
 
     /**
      * 验证用户的证书(账号密码或者Token)是否有效
-     *
      * @param  array $credentials
      * @return bool
      */
@@ -239,6 +238,7 @@ class JWTGuard implements Guard
     }
 
     /**
+     * 找到用户
      * @param array $credentials
      * @return AuthenticatableContract|null
      */
@@ -268,6 +268,7 @@ class JWTGuard implements Guard
     }
 
     /**
+     * 设置用户
      * @param AuthenticatableContract $user
      * @return $this
      */
@@ -283,6 +284,7 @@ class JWTGuard implements Guard
     }
 
     /**
+     * 设置Request
      * @param Request $request
      */
     public function setRequest($request)

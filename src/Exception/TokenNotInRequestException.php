@@ -2,9 +2,9 @@
 
 namespace Lsxiao\JWT\Exception;
 
-class TokenNotFoundException extends BaseJWTException
+class TokenNotInRequestException extends BaseJWTException
 {
-    public function __construct($message = 'TokenNotFoundException')
+    public function __construct($message = 'TokenNotInRequestException')
     {
         parent::__construct($message);
     }

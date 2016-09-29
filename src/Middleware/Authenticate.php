@@ -4,7 +4,7 @@ namespace Lsxiao\JWT\Middleware;
 
 use Closure;
 use Illuminate\Contracts\Auth\Factory as Auth;
-use Symfony\Component\HttpKernel\Exception\UnauthorizedHttpException;
+use Lsxiao\JWT\Exception\UnauthorizedException;
 
 class Authenticate
 {
@@ -30,13 +30,13 @@ class Authenticate
      * @param $request
      * @param Closure $next
      * @return mixed
+     * @throws UnauthorizedException
      */
     public function handle($request, Closure $next)
     {
         $this->auth->guard()->getToken()->validate();
-        $this->auth->guard()->user();
         if ($this->auth->guard()->guest()) {
-            throw new UnauthorizedHttpException('jwt');
+            throw new UnauthorizedException('jwt authenticate failed');
         }
 
         return $next($request);

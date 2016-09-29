@@ -21,7 +21,13 @@ class SingerFactory
         } elseif (starts_with($algorithmId, 'R')) {
             return self::createRsaSigner($algorithmId);
         }
-        throw new InvalidArgumentException();
+
+        throw new InvalidArgumentException(
+            "$algorithmId is not be supported,the supported algorithm list is: "
+            . implode(',', HMAC::getSupportAlgorithmIds())
+            . ","
+            . implode(',', RSA::getSupportAlgorithmIds())
+        );
     }
 
     /**

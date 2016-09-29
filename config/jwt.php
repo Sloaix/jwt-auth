@@ -32,6 +32,7 @@ return [
     */
     'public_secret_key' => env('JWT_PUBLIC_SECRET_KEY'),
 
+
     /*
     |--------------------------------------------------------------------------
     | Token 有效期
@@ -65,7 +66,7 @@ return [
     | 非对称算法,需提供公私钥:
     | RS256, RS384, RS512
     */
-    'algorithm_id' => env('JWT_ALGORITHM', 'HS256'),
+    'algorithm_id' => env('JWT_ALGORITHM', \Lsxiao\JWT\Singer\HMAC::DEFAULT_ALGO_ID),
 
 
     /*

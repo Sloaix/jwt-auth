@@ -12,12 +12,18 @@ class RSA implements ISign
      * 算法map
      * @var array
      */
-    private $algorithmMap;
+    public static $ALGORITHM_MAP = [
+        'RS256' => OPENSSL_ALGO_SHA256,
+        'RS384' => OPENSSL_ALGO_SHA384,
+        'RS512' => OPENSSL_ALGO_SHA512,
+    ];
+
     /**
      * 算法id
      * @var string
      */
     private $algorithmId;
+
     /**
      * 默认算法id
      * @var string
@@ -30,13 +36,16 @@ class RSA implements ISign
      */
     public function __construct($algorithmId = self::DEFAULT_ALGO_ID)
     {
-        $this->algorithmMap = [
-            'RS256' => OPENSSL_ALGO_SHA256,
-            'RS384' => OPENSSL_ALGO_SHA384,
-            'RS512' => OPENSSL_ALGO_SHA512,
-        ];
-
         $this->algorithmId = $algorithmId;
+    }
+
+    /**
+     * 获取算法id list
+     * @return array
+     */
+    public static function getSupportAlgorithmIds()
+    {
+        return array_keys(RSA::$ALGORITHM_MAP);
     }
 
     /**
@@ -45,9 +54,9 @@ class RSA implements ISign
      */
     public function getAlgorithm()
     {
-        $algorithm = $this->algorithmMap[$this->algorithmId];
+        $algorithm = RSA::$ALGORITHM_MAP[$this->algorithmId];
         if (!$algorithm) {
-            $algorithm = $this->algorithmMap[self::DEFAULT_ALGO_ID];
+            $algorithm = RSA::$ALGORITHM_MAP[self::DEFAULT_ALGO_ID];
         }
         return $algorithm;
     }
@@ -103,6 +112,8 @@ class RSA implements ISign
         if (!isset($details['key']) || $details['type'] !== OPENSSL_KEYTYPE_RSA) {
             throw new SecretKeyException('This  key is not compatible with RSA signatures');
         }
+
+        return true;
     }
 
 }

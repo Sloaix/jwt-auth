@@ -4,13 +4,31 @@
     "authors": [
         {
             "name": "lsxiao",
-            "email": "faith.epiphone@qq.com"
+            "email": "faith.epiphone@qq.com",
+            "homepage": "https://www.zhihu.com/people/lsxiao",
+            "role": "Developer"
         }
     ],
-    "require": {},
+    "require": {
+        "php": "^5.6 || ^7.0",
+        "illuminate/auth": "5.1.* || 5.2.* || 5.3.*",
+        "illuminate/contracts": "5.1.* || 5.2.* || 5.3.*",
+        "illuminate/http": "5.1.* || 5.2.* || 5.3.*",
+        "illuminate/support": "5.1.* || 5.2.* || 5.3.*"
+    },
     "autoload": {
         "psr-4": {
             "Lsxiao\\JWT\\": "src"
         }
-    }
+    },
+    "keywords": [
+        "jwt",
+        "lumen",
+        "laravel",
+        "laravel5",
+        "json web token"
+    ],
+    "license": "MIT",
+    "prefer-stable": true,
+    "minimum-stability": "stable"
 }

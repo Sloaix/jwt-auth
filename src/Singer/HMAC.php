@@ -9,10 +9,15 @@ use Lsxiao\JWT\Exception\SecretKeyException;
 class HMAC implements ISign
 {
     /**
-     * 算法映射map
+     * 算法map
      * @var array
      */
-    private $algorithmMap;
+    public static $ALGORITHM_MAP = [
+        'HS256' => 'sha256',
+        'HS384' => 'sha384',
+        'HS512' => 'sha512',
+    ];
+
     /**
      * 算法id
      * @var string
@@ -30,12 +35,17 @@ class HMAC implements ISign
      */
     public function __construct($algorithmId = self::DEFAULT_ALGO_ID)
     {
-        $this->algorithmMap = [
-            'HS256' => 'sha256',
-            'HS384' => 'sha384',
-            'HS512' => 'sha512',
-        ];
         $this->algorithmId = $algorithmId;
+    }
+
+
+    /**
+     * 获取算法id list
+     * @return string []
+     */
+    public static function getSupportAlgorithmIds()
+    {
+        return array_keys(HMAC::$ALGORITHM_MAP);
     }
 
     /**
@@ -44,9 +54,9 @@ class HMAC implements ISign
      */
     public function getAlgorithm()
     {
-        $algorithm = $this->algorithmMap[$this->algorithmId];
+        $algorithm = HMAC::$ALGORITHM_MAP[$this->algorithmId];
         if (!$algorithm) {
-            $algorithm = $this->algorithmMap[self::DEFAULT_ALGO_ID];
+            $algorithm = HMAC::$ALGORITHM_MAP[self::DEFAULT_ALGO_ID];
         }
         return $algorithm;
     }
@@ -88,6 +98,8 @@ class HMAC implements ISign
         if (!isset($secretKey)) {
             throw SecretKeyException::newInvalidInstance();
         }
+        
+        return true;
     }
 
 }
