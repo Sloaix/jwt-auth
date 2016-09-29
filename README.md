@@ -156,6 +156,7 @@ class User extends Model implements IClaimProvider
     //自定义的claims,无法覆盖预定义的claims
     public function getCustomClaims()
     {
+        //['name'=>'value','author'=>'lsxiao'] 必须是键值对形式
         return [];
     }
     
