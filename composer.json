@@ -30,5 +30,5 @@
     ],
     "license": "Apache-2.0",
     "prefer-stable": true,
-    "minimum-stability": "stable"
+    "minimum-stability": "dev"
 }
