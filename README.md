@@ -208,7 +208,8 @@ $app->get('user/profile', [
 
 ### Token刷新Middleware
 ```php
-//如果你想每次都自动刷新,可以使用jwt.refresh中间件,该中间件会自动刷新token,然后在HTTP Response Header,以Authorization:Bearer <Token>的形式返回Token
+//如果你想每次都自动刷新,可以使用jwt.refresh中间件,该中间件会自动刷新token
+//然后在HTTP Response Header,以Authorization:Bearer <Token>的形式返回Token
 $app->get('user/profile', [
     'middleware' => ['jwt.auth','jwt.refresh'],
     'uses' => 'UserController@showProfile'
