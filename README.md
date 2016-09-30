@@ -118,6 +118,7 @@ return [
 ```
 
 ### 配置auth
+将```auth.php```配置文件复制到config文件夹,修改如下
 ```php
 <?php
 return [
@@ -225,7 +226,7 @@ public function login(Request $request)
 
 ## 版本说明
 
-- 0.0.1 (2016-9-29)
+- 1.0 (2016-9-29)
   - jwt基本功能提交
 
 
