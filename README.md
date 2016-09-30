@@ -165,22 +165,6 @@ class User extends Model implements IClaimProvider
 }
 ```
 
-### 用户认证Middleware
-```php
-$app->get('user/profile', [
-    'middleware' => 'jwt.auth',
-    'uses' => 'UserController@showProfile'
-]);
-```
-
-### Token刷新Middleware
-```php
-$app->get('user/profile', [
-    'middleware' => ['jwt.auth','jwt.refresh'],
-    'uses' => 'UserController@showProfile'
-]);
-```
-
 ### 在Controller中根据账号密码获取Token
 ```php
 public function login(Request $request)
@@ -210,8 +194,25 @@ public function login(Request $request)
     if (!$token) {
         throw new TokenInvalidException("refresh failed");
     }
-    return response()->json(['token' => $token])
+    return response()->json(['token' => $token]);
 }
+```
+
+### 用户认证Middleware
+```php
+$app->get('user/profile', [
+    'middleware' => 'jwt.auth',
+    'uses' => 'UserController@showProfile'
+]);
+```
+
+### Token刷新Middleware
+```php
+//如果你想每次都自动刷新,可以使用jwt.refresh中间件,该中间件会自动刷新token,然后在HTTP Response Header,以Authorization:Bearer <Token>的形式返回Token
+$app->get('user/profile', [
+    'middleware' => ['jwt.auth','jwt.refresh'],
+    'uses' => 'UserController@showProfile'
+]);
 ```
 
 ### 需要处理的异常
