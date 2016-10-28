@@ -2,7 +2,6 @@
 namespace Lsxiao\JWT\Auth;
 
 use Illuminate\Auth\GuardHelpers;
-use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
@@ -41,11 +40,6 @@ class JWTGuard implements Guard
      * @var Token
      */
     protected $token;
-
-    /**
-     * @var Authenticatable
-     */
-    private $user;
 
     /**
      * 创建一个用于认证身份的Guard
