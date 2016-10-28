@@ -1,5 +1,5 @@
 # jwt-auth
-Lumen JSON Web Token 认证扩展包
+Laravel/Lumen JSON Web Token 认证扩展包
 
 ## 待完成
 
@@ -15,9 +15,36 @@ composer require "lsxiao/jwt-auth"
 
 ## 使用方法
 
-### 配置jwt-auth
-在项目的lumen项目的根目录创建config文件夹,将```jwt.php```配置文件复制到此处
+### 注册服务提供者
 
+### Laravel
+在config/app.php中
+```php
+'providers' => [
+        /*
+         * Package Service Providers...
+         */
+        Lsxiao\JWT\Provider\LaravelServiceProvider::class,
+    ],
+```
+
+#### Lumen
+在bootstrap/app.php中
+```php
+$app->register(Lsxiao\JWT\Provider\LumenServiceProvider::class);
+```
+
+
+### 配置jwt-auth
+
+#### Laravel
+```bash
+php artisan vendor:publish
+```
+jwt.php配置文件会被拷贝到项目根目录的config文件夹中
+
+#### Lumen
+在项目的lumen项目的根目录创建config文件夹,将```jwt.php```配置文件复制到此处
 ```php
 <?php
 return [
@@ -118,7 +145,14 @@ return [
 ```
 
 ### 配置auth
-将```auth.php```配置文件复制到config文件夹,修改如下
+
+### Laravel
+在config文件夹中找到auth.php
+
+#### Lumen
+将```auth.php```配置文件复制到config文件夹
+
+修改如下:
 ```php
 <?php
 return [
@@ -139,6 +173,20 @@ return [
     ],
 ];
 ```
+
+### 路由认证中间件
+
+#### Laravel
+在app/Http/Kernel.php中进行配置
+```php
+    protected $routeMiddleware = [
+        'jwt.auth' => \Lsxiao\JWT\Middleware\Authenticate::class,
+        'jwt.refresh' => \Lsxiao\JWT\Middleware\RefreshToken::class,
+    ];
+```
+
+#### Lumen
+已动态方式注册，无需再次配置
 
 ### 实现IClaimProvider接口
 
@@ -227,6 +275,12 @@ $app->get('user/profile', [
 
 
 ## 版本说明
+
+- 1.0.2 (2016-10-28)
+  - 支持Laravel,提供LaravelServiceProvider
+
+- 1.0.1 (2016-10-28)
+  - 修复获取用户的时候没进行身份认证的BUG
 
 - 1.0 (2016-9-29)
   - jwt基本功能提交
