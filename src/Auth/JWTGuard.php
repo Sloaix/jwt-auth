@@ -82,6 +82,7 @@ class JWTGuard implements Guard
         if (!empty($token) && $token->isValid()) {
             $user = $this->provider->retrieveById($token->getClaim('sub')->getValue());
         }
+
         return $this->user = $user;
     }
 
@@ -243,7 +244,7 @@ class JWTGuard implements Guard
      */
     public function validate(array $credentials = [])
     {
-        $user = $user = $this->provider->retrieveByCredentials($credentials);
+        $user = $this->provider->retrieveByCredentials($credentials);
 
         return $user ? $this->provider->validateCredentials($user, $credentials) : false;
     }
