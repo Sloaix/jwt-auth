@@ -17,7 +17,7 @@ composer require "lsxiao/jwt-auth"
 
 ### 注册服务提供者
 
-### Laravel
+#### Laravel
 在config/app.php中
 ```php
 'providers' => [
@@ -146,7 +146,7 @@ return [
 
 ### 配置auth
 
-### Laravel
+#### Laravel
 在config文件夹中找到auth.php
 
 #### Lumen
