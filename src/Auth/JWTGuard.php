@@ -2,6 +2,7 @@
 namespace Lsxiao\JWT\Auth;
 
 use Illuminate\Auth\GuardHelpers;
+use Illuminate\Contracts\Auth\Authenticatable;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
 use Illuminate\Contracts\Auth\Guard;
 use Illuminate\Contracts\Auth\UserProvider;
@@ -40,6 +41,11 @@ class JWTGuard implements Guard
      * @var Token
      */
     protected $token;
+
+    /**
+     * @var Authenticatable
+     */
+    private $user;
 
     /**
      * 创建一个用于认证身份的Guard
@@ -213,6 +219,7 @@ class JWTGuard implements Guard
      */
     private function parseToken()
     {
+        //尝试从查询参数或body中得到token
         $token = $this->request->input($this->inputKey);
 
         //token 为空,尝试从header中分析出token
@@ -230,19 +237,15 @@ class JWTGuard implements Guard
     }
 
     /**
-     * 验证用户的证书(账号密码或者Token)是否有效
+     * 验证用户的证书(账号密码)是否有效
      * @param  array $credentials
      * @return bool
      */
     public function validate(array $credentials = [])
     {
-        $user = $this->findUser($credentials);
+        $user = $user = $this->provider->retrieveByCredentials($credentials);
 
-        if ($user) {
-            return true;
-        }
-
-        return false;
+        return $user ? $this->provider->validateCredentials($user, $credentials) : false;
     }
 
     /**
@@ -252,7 +255,11 @@ class JWTGuard implements Guard
      */
     private function findUser(array $credentials = [])
     {
-        return $user = $this->provider->retrieveByCredentials($credentials);
+        if ($this->validate($credentials)) {
+            return $this->provider->retrieveByCredentials($credentials);
+        } else {
+            return null;
+        }
     }
 
     /**
@@ -262,7 +269,7 @@ class JWTGuard implements Guard
      */
     public function attempt(array $credentials = [])
     {
-        $user = $this->provider->retrieveByCredentials($credentials);
+        $user = $this->findUser($credentials);
         if (is_null($user)) {
             return false;
         }
