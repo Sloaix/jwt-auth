@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         bootstrap="vendor/autoload.php"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false"
+         stopOnError="false"
+         verbose="true"
+         syntaxCheck="false">
+    <testsuites>
+        <testsuite name="Package Test Suite">
+            <directory suffix=".php">tests/</directory>
+            <exclude>
+                <file>tests/TestCase.php</file>
+            </exclude>
+        </testsuite>
+    </testsuites>
+</phpunit>

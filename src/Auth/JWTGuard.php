@@ -164,7 +164,7 @@ class JWTGuard implements Guard
         $issueAt = $now;
         $expireAt = $now + ConfigUtil::getTTL() * 60;//有效期截止时间
         $refreshExpireAt = $now + ConfigUtil::getRefreshTTL() * 60;//刷新截止时间
-        $notBefore = $issueAt;//有效期开始时间
+        $notBefore = $issueAt - 60;//有效期开始时间
         $jwtId = uniqid();
         $subject = $user->getIdentifier();
         $secretKey = ConfigUtil::getSecretKey();
@@ -174,7 +174,7 @@ class JWTGuard implements Guard
                 $builder->customClaim($name, $value);
             }
         }
-        
+
         $token = $builder->algoId($agloId)
             ->issuer($issuer)
             ->issueAt($issueAt)
@@ -213,7 +213,7 @@ class JWTGuard implements Guard
      */
     private function parseToken()
     {
-        $token = $this->request->query($this->inputKey);
+        $token = $this->request->input($this->inputKey);
 
         //token 为空,尝试从header中分析出token
         if (empty($token)) {
