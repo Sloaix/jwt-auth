@@ -86,11 +86,12 @@ class JWTGuard implements Guard
      */
     public function refreshToken()
     {
-        if (!$this->getToken()->canRefresh()) {
+        $token = $this->getToken();
+        if (!$token->canRefresh()) {
             return false;
         }
 
-        $user = $this->user();
+        $user = $this->provider->retrieveById($token->getClaim('sub')->getValue());
 
         if ($user == null || !$user instanceof IClaimProvider) {
             return false;
