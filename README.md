@@ -276,6 +276,9 @@ $app->get('user/profile', [
 
 ## 版本说明
 
+- 1.0.3 (2016-11-21)
+  - 修复Auth::refreshToken方法不能刷新成功的严重BUG
+
 - 1.0.2 (2016-10-28)
   - 支持Laravel,提供LaravelServiceProvider
 
