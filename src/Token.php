@@ -133,8 +133,8 @@ class Token
         if (!$this->isInBlacklist()) {
             return true;
         }
-        $jwtId = $this->getClaim('jti');
-        $blacklistGraceTime = $this->payload->getClaim('blgt');
+        $jwtId = $this->getClaim('jti')->getValue();
+        $blacklistGraceTime = $this->payload->getClaim('blgt')->getValue();
         $startTimestamp = CacheUtil::getBlackListCacheStartTime($jwtId);
         $now = time();
         return $now < $startTimestamp + $blacklistGraceTime;

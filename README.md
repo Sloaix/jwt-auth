@@ -276,6 +276,9 @@ $app->get('user/profile', [
 
 ## 版本说明
 
+- 1.0.4 (2016-11-21)
+  - 修复hasBlacklistGraceTimeOrNotInBlacklist函数的bug。
+
 - 1.0.3 (2016-11-21)
   - 修复Auth::refreshToken方法不能刷新成功的严重BUG
 
