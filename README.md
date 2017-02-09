@@ -1,4 +1,4 @@
-# jwt-auth
+# jwt-auth [![PHP version](https://badge.fury.io/ph/lsxiao%2Fjwt-auth.svg)](https://badge.fury.io/ph/lsxiao%2Fjwt-auth)
 Laravel/Lumen JSON Web Token 认证扩展包
 
 ## 待完成
