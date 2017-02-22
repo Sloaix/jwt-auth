@@ -23,7 +23,10 @@
     "autoload": {
         "psr-4": {
             "Lsxiao\\JWT\\": "src"
-        }
+        },
+        "files": [
+            "src/helpers.php"
+        ]
     },
     "autoload-dev": {
         "classmap": [

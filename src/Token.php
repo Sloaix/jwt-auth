@@ -16,6 +16,7 @@ use Lsxiao\JWT\Util\CacheUtil;
 
 class Token
 {
+    use TokenTrait;
     /**
      * 载荷
      * @var Payload

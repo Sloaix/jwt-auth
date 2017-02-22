@@ -15,26 +15,6 @@ composer require "lsxiao/jwt-auth"
 
 ## 使用方法
 
-### 注册服务提供者
-
-#### Laravel
-在config/app.php中
-```php
-'providers' => [
-        /*
-         * Package Service Providers...
-         */
-        Lsxiao\JWT\Provider\LaravelServiceProvider::class,
-    ],
-```
-
-#### Lumen
-在bootstrap/app.php中
-```php
-$app->register(Lsxiao\JWT\Provider\LumenServiceProvider::class);
-```
-
-
 ### 配置jwt-auth
 
 #### Laravel
@@ -160,108 +140,76 @@ return [
         'guard' => env('AUTH_GUARD', 'api'),
     ],
     'guards' => [
-        'api' => [
-            'driver' => 'jwt',//这里必须是jwt,由JWTGuard驱动
-            'provider' => 'users'
-        ],
+        'api' => ['driver' => 'jwt'],//这里必须是jwt,由JWTGuard驱动
     ],
     'providers' => [
-        'users' => [
-            'driver' => 'eloquent',
-            'model' => App\User::class,
-        ],
+        //
     ],
 ];
 ```
 
-### 路由认证中间件
+### 开启认证
+修改 bootstrap/app.php，取消 auth middleware 及 AuthServiceProvider 的注释
 
-#### Laravel
-在app/Http/Kernel.php中进行配置
+修改 app/Providers/AuthServiceProvider.php 的 boot 方法：
 ```php
-    protected $routeMiddleware = [
-        'jwt.auth' => \Lsxiao\JWT\Middleware\Authenticate::class,
-        'jwt.refresh' => \Lsxiao\JWT\Middleware\RefreshToken::class,
-    ];
-```
-
-#### Lumen
-已动态方式注册，无需再次配置
-
-### 实现IClaimProvider接口
-
-```php
-//实现IClaimProvider接口
-class User extends Model implements IClaimProvider
+public function boot()
 {
-    //...
+    $this->app->configure('jwt');
+    $this->app['auth']->viaRequest('api', function ($request) {
+        $token = \Lsxiao\JWT\Token::fromRequest($request);
 
-    //Token中身份标识,一般设置为user id 即可
-    public function getIdentifier()
-    {
-        return $this->id;
-    }
-
-    //自定义的claims,无法覆盖预定义的claims
-    public function getCustomClaims()
-    {
-        //['name'=>'value','author'=>'lsxiao'] 必须是键值对形式
-        return [];
-    }
-    
-    //...
+        if (!empty($token) && $token->isValid()) {
+            $userid = $token->getClaim('sub')->getValue();
+            return User::find($userid);
+        }
+    });
 }
 ```
+
+### 用户类
+用户类 User 需要确认已实现 \Illuminate\Contracts\Auth\Authenticatable 接口，默认的 User 类即可
 
 ### 在Controller中根据账号密码获取Token
 ```php
 public function login(Request $request)
 {
-    //从请求取出证书,也就是邮件密码
+    //通过user返回一个Token
     $credentials = $request->only('email', 'password');
-    $token = Auth::attempt($credentials);
-    return response()->json(['token' => $token]);
-}
-
-public function login(Request $request)
-{
-    //或者通过user返回一个Token
-    $credentials = $request->only('email', 'password');
-    $user = User::where('email', $credentials[0])->where('password', $credentials[1]);
-    $token = Auth::newToken($user);
+    $user = User::where('email', $credentials[0])->where('password', $credentials[1])->first();
+    $token = \Lsxiao\JWT\Token::fromUser($user);
     return response()->json(['token' => $token]);
 }
 ```
 
-### 在Controller中刷新Token
+### 在需要的地方刷新Token
+Controller 中
 ```php
 public function login(Request $request)
 {
     //从请求取出证书,也就是邮件密码
-    $token = Auth::refreshToken();
-    if (!$token) {
+    $token = \Lsxiao\JWT\Token::refreshToken($request);
+    if (!$token) {
         throw new TokenInvalidException("refresh failed");
     }
     return response()->json(['token' => $token]);
 }
 ```
-
-### 用户认证Middleware
+Middleware 中
 ```php
-$app->get('user/profile', [
-    'middleware' => 'jwt.auth',
-    'uses' => 'UserController@showProfile'
-]);
-```
+public function handle($request, Closure $next, $guard = null)
+{
+    if ($this->auth->guard($guard)->guest()) {
+        return response('Unauthorized.', 401);
+    }
 
-### Token刷新Middleware
-```php
-//如果你想每次都自动刷新,可以使用jwt.refresh中间件,该中间件会自动刷新token
-//然后在HTTP Response Header,以Authorization:Bearer <Token>的形式返回Token
-$app->get('user/profile', [
-    'middleware' => ['jwt.auth','jwt.refresh'],
-    'uses' => 'UserController@showProfile'
-]);
+    $response = $next($request);
+
+    // RefreshToken : reset HTTP Response Header
+    \Lsxiao\JWT\Token::refreshToken($request, $response);
+
+    return $response;
+}
 ```
 
 ### 需要处理的异常

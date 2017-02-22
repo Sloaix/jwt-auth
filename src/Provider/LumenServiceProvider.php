@@ -8,6 +8,8 @@ use Lsxiao\JWT\Auth\JWTGuard;
 use Lsxiao\JWT\Middleware\Authenticate;
 use Lsxiao\JWT\Middleware\RefreshToken;
 
+use Lsxiao\JWT\Token;
+
 class LumenServiceProvider extends ServiceProvider
 {
     public function boot()
@@ -15,21 +17,14 @@ class LumenServiceProvider extends ServiceProvider
         //从应用根目录的config文件夹中加载用户的jwt配置文件
         $this->app->configure('jwt');
 
-        //获取扩展包配置文件的真实路径
-        $path = realpath(__DIR__ . '/../../config/jwt.php');
+        $this->app['auth']->viaRequest('jwt', function ($request) {
 
-        //将扩展包的配置文件merge进用户的配置文件中
-        $this->mergeConfigFrom($path, 'jwt');
+            $token = Token::fromRequest($request);
 
-        $this->app->routeMiddleware([
-            'jwt.auth' => Authenticate::class,
-            'jwt.refresh' => RefreshToken::class,
-        ]);
-
-        $this->app['auth']->extend('jwt', function ($app, $name, array $config) {
-            $guard = new JWTGuard($app['auth']->createUserProvider($config['provider']), $app['request']);
-
-            return $guard;
+            if (!empty($token) && $token->isValid()) {
+                $userid = $token->getClaim('sub')->getValue();
+                return User::find($userid);
+            }
         });
     }
 }
