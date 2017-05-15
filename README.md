@@ -4,6 +4,8 @@
 
 所以我推荐大家使用 https://github.com/tymondesigns/jwt-auth/wiki :)，如果你有JWT相关不懂的，可以提issue，大家一起探讨。
 
+如果你只是想学习如何实现一个JWT的扩展包，我相信本项目应该会带给你一些帮助:)
+
 
 # jwt-auth [![PHP version](https://badge.fury.io/ph/lsxiao%2Fjwt-auth.svg)](https://badge.fury.io/ph/lsxiao%2Fjwt-auth)
 Laravel/Lumen JSON Web Token 认证扩展包
