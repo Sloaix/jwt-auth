@@ -1,3 +1,8 @@
+由于该库的主要目的是JWT的实现原理的技术分享，而我目前忙于公司的Android项目，暂没有时间维护当前扩展包(对Laravel5.4的兼容性不好)，并且扩展包稳定性还有待验证，不推荐使用到正式环境。
+
+所以我推荐大家使用 https://github.com/tymondesigns/jwt-auth/wiki :)，如果你有JWT相关不懂的，可以提issue，大家一起探讨。
+
+
 # jwt-auth [![PHP version](https://badge.fury.io/ph/lsxiao%2Fjwt-auth.svg)](https://badge.fury.io/ph/lsxiao%2Fjwt-auth)
 Laravel/Lumen JSON Web Token 认证扩展包
 
