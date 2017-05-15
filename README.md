@@ -4,7 +4,7 @@
 
 所以我推荐大家使用 https://github.com/tymondesigns/jwt-auth :)，如果你有JWT相关不懂的，可以提issue，大家一起探讨。
 
-如果你只是想学习如何实现一个JWT的扩展包，我相信本项目应该会带给你一些帮助:)
+如果你想学习JWT的实现原理，我相信本项目应该会带给你一些帮助:),配合专栏食用更佳 https://zhuanlan.zhihu.com/p/22531819
 
 
 # jwt-auth [![PHP version](https://badge.fury.io/ph/lsxiao%2Fjwt-auth.svg)](https://badge.fury.io/ph/lsxiao%2Fjwt-auth)
